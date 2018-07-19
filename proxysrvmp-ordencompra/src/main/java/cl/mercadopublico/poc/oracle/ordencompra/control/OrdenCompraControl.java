@@ -70,6 +70,8 @@ public class OrdenCompraControl {
 				module.addSerializer(OrdenCompra.class, new OrdenCompraSerializer());
 				mapper.registerModule(module);
 				ordenCompraJson = mapper.writeValueAsString(request.getOrdenCompra());
+				
+				System.out.println("ordenCompraJson: "+ ordenCompraJson);
 
 				client = ClientBuilder.newClient();
 				target = client.target(OrdenCompraControl.REQUEST_URL);
@@ -77,7 +79,10 @@ public class OrdenCompraControl {
 				responseHttp = invocationBuilder.post(Entity.entity(ordenCompraJson, OrdenCompraControl.CONTENT_TYPE));
 
 				responseEntity = (responseHttp.readEntity(String.class));
-
+				
+				System.out.println("Estatus: " + responseHttp.getStatus());
+				System.out.println("Respuesta: " + responseEntity);
+				
 				if (responseHttp.getStatus() == 200) {
 					if (Optional.ofNullable(responseEntity).isPresent()) {
 						estado = new Estado(Estados.OK.toString(), "OK");
@@ -91,11 +96,7 @@ public class OrdenCompraControl {
 						estado = new Estado(Estados.OK.toString(), "OK");
 					}
 				} else {
-					mapper = new ObjectMapper();
-					module = new SimpleModule("EstadoDeserializer", new Version(1, 0, 0, null, null, null));
-					module.addDeserializer(Estado.class, new EstadoDeserializer());
-					mapper.registerModule(module);
-					estado = mapper.readValue(responseEntity, Estado.class);
+					estado = new Estado(Estados.INTERNAL_ERROR.toString(), "Internal Server Error");
 				}
 			} else {
 				estado = new Estado(Estados.BAD_REQUEST.toString(), "Bad Request");
