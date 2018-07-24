@@ -191,6 +191,11 @@ public class OrdenCompra {
 		if (Optional.ofNullable(this.getFechaEntrega()).isPresent()) {
 			trace.append("fechaEntrega=").append(this.getFechaEntrega()).append(",");
 		}
+		if (Optional.ofNullable(this.getProductos()).isPresent() && !this.getProductos().isEmpty()) {
+			for (Producto producto : productos) {
+				trace.append("producto=").append(producto.toString()).append(",");
+			}
+		}
 		return trace.toString();
 	}
 	
