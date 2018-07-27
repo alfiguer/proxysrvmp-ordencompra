@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import cl.mercadopublico.poc.oracle.ordencompra.domain.Estado;
 import cl.mercadopublico.poc.oracle.ordencompra.domain.OrdenCompra;
 import cl.mercadopublico.poc.oracle.ordencompra.domain.Producto;
-import cl.mercadopublico.poc.oracle.ordencompra.json.deserializer.EstadoDeserializer;
 import cl.mercadopublico.poc.oracle.ordencompra.json.deserializer.OrdenCompraResponseDeserializer;
 import cl.mercadopublico.poc.oracle.ordencompra.json.serializer.OrdenCompraSerializer;
 import cl.mercadopublico.poc.oracle.ordencompra.message.request.GenerarOrdenCompraRequest;
@@ -62,6 +61,7 @@ public class OrdenCompraControl {
 		Invocation.Builder invocationBuilder;
 		Response responseHttp;
 		String responseEntity;
+		StringBuilder sb;
 
 		try {
 			if (Optional.ofNullable(request).isPresent()) {
@@ -70,8 +70,11 @@ public class OrdenCompraControl {
 				module.addSerializer(OrdenCompra.class, new OrdenCompraSerializer());
 				mapper.registerModule(module);
 				ordenCompraJson = mapper.writeValueAsString(request.getOrdenCompra());
-				
-				System.out.println("ordenCompraJson: "+ ordenCompraJson);
+
+				sb = new StringBuilder();
+				sb.append("Path: tienda/OC/Generar");
+				sb.append(" | Entity: ").append(ordenCompraJson);
+				System.out.println("HTTP REQUEST: " + sb.toString());
 
 				client = ClientBuilder.newClient();
 				target = client.target(OrdenCompraControl.REQUEST_URL);
@@ -79,10 +82,13 @@ public class OrdenCompraControl {
 				responseHttp = invocationBuilder.post(Entity.entity(ordenCompraJson, OrdenCompraControl.CONTENT_TYPE));
 
 				responseEntity = (responseHttp.readEntity(String.class));
-				
-				System.out.println("Estatus: " + responseHttp.getStatus());
-				System.out.println("Respuesta: " + responseEntity);
-				
+
+				sb = new StringBuilder();
+				sb.append("Path: tienda/OC/Generar");
+				sb.append(" | Estatus: ").append(responseHttp.getStatus());
+				sb.append(" | Entity: ").append(responseEntity);
+				System.out.println("HTTP RESPONSE: " + sb.toString());
+
 				if (responseHttp.getStatus() == 200) {
 					if (Optional.ofNullable(responseEntity).isPresent()) {
 						estado = new Estado(Estados.OK.toString(), "OK");
@@ -125,7 +131,7 @@ public class OrdenCompraControl {
 		ordenCompra.setCodigoUsuario("1299437_3234");
 		ordenCompra.setCodigoUsuarioTienda("codigoEXTXXXXX");
 		ordenCompra.setFechaCompra("2009-02-15 12:15:45");
-		ordenCompra.setMontoTotal(10000);
+		ordenCompra.setMontoTotal(147.45D);
 		ordenCompra.setMonedaCompra("CLP");
 		ordenCompra.setDireccionDespacho("Direccion||ciudad (idCiudad)||region (idRegion)||pais (idPais) ");
 		ordenCompra.setFechaEntrega("2009-02-15 12:15:45");
@@ -134,7 +140,7 @@ public class OrdenCompraControl {
 		producto1.setCodigoProducto("codigoProductoXXXX");
 		producto1.setNombreProducto("NombreProductoXXXX");
 		producto1.setCantidadProducto(12);
-		producto1.setPrecioUnitario(1000);
+		producto1.setPrecioUnitario(94.55D);
 		producto1.setInformacion("InformacionXXXX DDDDD DDDDDD DFFFFFF");
 
 		productos.add(producto1);

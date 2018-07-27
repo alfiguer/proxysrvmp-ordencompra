@@ -1,7 +1,11 @@
 package cl.mercadopublico.poc.oracle.ordencompra.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class OrdenCompra {
 	
@@ -23,7 +27,7 @@ public class OrdenCompra {
 	
 	private String fechaCompra;
 	
-	private Integer montoTotal;
+	private Double montoTotal;
 	
 	private String monedaCompra;
 	
@@ -109,11 +113,11 @@ public class OrdenCompra {
 		this.fechaCompra = fechaCompra;
 	}
 
-	public Integer getMontoTotal() {
+	public Double getMontoTotal() {
 		return montoTotal;
 	}
 
-	public void setMontoTotal(Integer montoTotal) {
+	public void setMontoTotal(Double montoTotal) {
 		this.montoTotal = montoTotal;
 	}
 
@@ -149,6 +153,31 @@ public class OrdenCompra {
 		this.productos = productos;
 	}
 	
+	public void addProducto(Producto producto) {
+		if (!Optional.ofNullable(this.productos).isPresent()) {
+			this.productos = new ArrayList<Producto>();
+		}
+		this.productos.add(producto);
+	}
+
+	@Override
+    public boolean equals(Object o) {
+        if (!(o instanceof OrdenCompra)) {
+            return false;
+        }
+        OrdenCompra other  = (OrdenCompra) o;
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(getRutProveedor(), other.getRutProveedor());
+        return builder.isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        HashCodeBuilder builder = new HashCodeBuilder();
+        builder.append(getRutProveedor());
+        return builder.hashCode();
+    }
+    
 	@Override
 	public String toString() {
 		StringBuilder trace = new StringBuilder();

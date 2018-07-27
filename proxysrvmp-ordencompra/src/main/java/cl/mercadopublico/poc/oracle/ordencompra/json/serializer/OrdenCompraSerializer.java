@@ -80,7 +80,7 @@ public class OrdenCompraSerializer extends StdSerializer<OrdenCompra> {
 			ordenCompra.setCodigoUsuario("1299437_3234");
 			ordenCompra.setCodigoUsuarioTienda("codigoEXTXXXXX");
 			ordenCompra.setFechaCompra("2009-02-15 12:15:45");
-			ordenCompra.setMontoTotal(10000);
+			ordenCompra.setMontoTotal(47.45D);
 			ordenCompra.setMonedaCompra("CLP");
 			ordenCompra.setDireccionDespacho("Direccion||ciudad (idCiudad)||region (idRegion)||pais (idPais) ");
 			ordenCompra.setFechaEntrega("2009-02-15 12:15:45");
@@ -89,7 +89,7 @@ public class OrdenCompraSerializer extends StdSerializer<OrdenCompra> {
 			producto1.setCodigoProducto("codigoProductoXXXX");
 			producto1.setNombreProducto("NombreProductoXXXX");
 			producto1.setCantidadProducto(12);
-			producto1.setPrecioUnitario(1000);
+			producto1.setPrecioUnitario(41.45D);
 			producto1.setInformacion("InformacionXXXX DDDDD DDDDDD DFFFFFF");
 
 			productos.add(producto1);

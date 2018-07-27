@@ -12,7 +12,7 @@ public class Producto {
 
 	private Integer cantidadProducto;
 
-	private Integer precioUnitario;
+	private Double precioUnitario;
 
 	private String informacion;
 
@@ -52,11 +52,11 @@ public class Producto {
 		this.cantidadProducto = cantidadProducto;
 	}
 
-	public Integer getPrecioUnitario() {
+	public Double getPrecioUnitario() {
 		return precioUnitario;
 	}
 
-	public void setPrecioUnitario(Integer precioUnitario) {
+	public void setPrecioUnitario(Double precioUnitario) {
 		this.precioUnitario = precioUnitario;
 	}
 
